@@ -1,5 +1,10 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:rentifyui/common/widgets/custom_alert.dart';
+
+import 'package:rentifyui/features/auth/service/auth_provider.dart';
 import '../../../common/widgets/app_background.dart';
 import '../../../common/widgets/custom_card.dart';
 import '../../../common/widgets/custom_button.dart';
@@ -15,15 +20,35 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isLoading = false;
 
   void _handleLogin() async {
-    setState(() => _isLoading = true);
-    // Simulate network request
-    await Future.delayed(const Duration(seconds: 1));
-    if (mounted) {
-      setState(() => _isLoading = false);
-      context.go('/dashboard');
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    try {
+      await authProvider.login(
+        _emailController.text,
+        _passwordController.text,
+      );
+      if (mounted) {
+        context.go('/dashboard');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: AwesomeSnackbarContent(
+              title: "Login Failed",
+              message: e.toString().replaceAll('Exception: ', ''),
+              contentType: ContentType.warning,
+            ),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.all(16),
+            padding: EdgeInsets.zero,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      }
     }
   }
 
@@ -94,12 +119,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 24),
                     SizedBox(
                       width: double.infinity,
-                      child: CustomButton(
-                        label: 'Sign In',
-                        onPressed: _isLoading ? null : _handleLogin,
-                        variant: ButtonVariant.defaultVariant,
-                        isLoading: _isLoading,
-                        // Using default green color from variant
+                      child: Consumer<AuthProvider>(
+                        builder: (context, authProvider, child) {
+                          return CustomButton(
+                            label: 'Sign In',
+                            onPressed:
+                                authProvider.isLoading ? null : _handleLogin,
+                            variant: ButtonVariant.defaultVariant,
+                            isLoading: authProvider.isLoading,
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(height: 16),

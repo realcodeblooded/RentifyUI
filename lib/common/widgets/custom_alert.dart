@@ -80,9 +80,9 @@ class CustomAlert extends StatelessWidget {
     switch (variant) {
       case AlertVariant.destructive:
         return _AlertStyle(
-          backgroundColor: Colors.white, // bg-card (presumed white/dark)
+          backgroundColor: Colors.green, // bg-card (presumed white/dark)
           borderColor:
-              Colors.red, // border-destructive (usually) or normal border
+              Colors.green, // border-destructive (usually) or normal border
           titleColor: Colors.red, // text-destructive
           descriptionColor: Colors.red.withOpacity(0.9), // text-destructive/90
           iconColor: Colors.red, // text-current -> text-destructive

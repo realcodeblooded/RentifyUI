@@ -1,6 +1,7 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fl_chart/fl_chart.dart';
+
 import '../../../../common/widgets/custom_card.dart';
 
 class MetricsTab extends StatelessWidget {
@@ -143,12 +144,13 @@ class _RevenueChartCard extends StatelessWidget {
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.arrow_upward, size: 16, color: Colors.green),
+                    Icon(Icons.arrow_upward,
+                        size: 16, color: Colors.lightGreenAccent),
                     SizedBox(width: 4),
                     Text(
                       '12.5%',
                       style: TextStyle(
-                        color: Colors.green,
+                        color: Colors.lightGreenAccent,
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
                       ),
@@ -241,7 +243,7 @@ class _RevenueChartCard extends StatelessWidget {
                       FlSpot(11, 4),
                     ],
                     isCurved: true,
-                    color: Colors.purple,
+                    color: Colors.purpleAccent,
                     barWidth: 3,
                     isStrokeCapRound: true,
                     dotData: const FlDotData(show: false),

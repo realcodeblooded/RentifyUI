@@ -144,8 +144,8 @@ class CustomButton extends StatelessWidget {
         break;
       case ButtonVariant.defaultVariant:
       default:
-        backgroundColor = const Color(0xFF4ADE80); // bg-[#4ade80]
-        foregroundColor = Colors.white;
+        backgroundColor = Theme.of(context).colorScheme.secondary;
+        foregroundColor = Theme.of(context).colorScheme.onSecondary;
         break;
     }
 

@@ -39,23 +39,21 @@ class LandingScreen extends StatelessWidget {
                     const SizedBox(height: 24, width: 8),
 
                     // Welcome Text
-                    const Text(
+                    Text(
                       'Hi there Thomas!',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                      style:
+                          Theme.of(context).textTheme.displayMedium?.copyWith(
+                                color: Colors.white,
+                              ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Welcome to Rentify - your all-in-one property management solution',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white.withOpacity(0.9),
-                        height: 1.5,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: Colors.white.withOpacity(0.9),
+                            height: 1.5,
+                          ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 32),
@@ -78,7 +76,7 @@ class LandingScreen extends StatelessWidget {
                       ),
                     ),
                     // Footer Text
-                  const Text(
+                    const Text(
                       'Streamline your property management with Rentify\'s intuitive platform',
                       style: TextStyle(
                         fontSize: 10,
