@@ -2,7 +2,6 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:rentifyui/common/widgets/custom_alert.dart';
 
 import 'package:rentifyui/features/auth/service/auth_provider.dart';
 import '../../../common/widgets/app_background.dart';
@@ -35,17 +34,14 @@ class _LoginScreenState extends State<LoginScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: AwesomeSnackbarContent(
-              title: "Login Failed",
-              message: e.toString().replaceAll('Exception: ', ''),
-              contentType: ContentType.warning,
-            ),
-            backgroundColor: Colors.transparent,
             elevation: 0,
             behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.all(16),
-            padding: EdgeInsets.zero,
-            duration: const Duration(seconds: 4),
+            backgroundColor: Colors.transparent,
+            content: AwesomeSnackbarContent(
+              title: "Oops! Login Failed",
+              message: e.toString() + "\n" + "Please try again",
+              contentType: ContentType.failure,
+            ),
           ),
         );
       }
