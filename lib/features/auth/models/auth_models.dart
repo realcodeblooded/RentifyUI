@@ -22,11 +22,17 @@ class AuthData {
   final String? accessToken;
   final String? refreshToken;
   final String? id;
+  final String? role;
+  final String? firstName;
+  final String? lastName;
 
   AuthData({
     this.accessToken,
     this.refreshToken,
     this.id,
+    this.role,
+    this.firstName,
+    this.lastName,
   });
 
   factory AuthData.fromJson(Map<String, dynamic> json) {
@@ -34,6 +40,9 @@ class AuthData {
       accessToken: json['accessToken'],
       refreshToken: json['refreshToken'],
       id: json['id'],
+      role: json['role'],
+      firstName: json['firstName'],
+      lastName: json['lastName'],
     );
   }
 }

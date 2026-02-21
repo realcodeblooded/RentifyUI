@@ -26,6 +26,15 @@ class AuthService {
           if (authData.id != null) {
             await storage.write(key: "userId", value: authData.id);
           }
+          if (authData.role != null) {
+            await storage.write(key: "role", value: authData.role);
+          }
+          if (authData.firstName != null) {
+            await storage.write(key: "firstName", value: authData.firstName);
+          }
+          if (authData.lastName != null) {
+            await storage.write(key: "lastName", value: authData.lastName);
+          }
         } else {
           throw Exception("Access token missing in response");
         }
@@ -35,6 +44,23 @@ class AuthService {
       }
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<String> logout(String userId) async {
+    try {
+      final response =
+          await _apiUtil.post("/auth/logout", body: {"userId": userId});
+      final GeneralResponse generalResponse =
+          GeneralResponse.fromJson(response);
+      if (generalResponse.success) {
+        await storage.deleteAll();
+      }
+      return generalResponse.message;
+    } catch (e) {
+      rethrow;
+    } finally {
+      await storage.deleteAll();
     }
   }
 }

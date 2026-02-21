@@ -26,8 +26,18 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  void logout() {
-    _isAuthenticated = false;
+  Future<void> logout(String userId) async {
+    _isLoading = true;
     notifyListeners();
+    try {
+      await _authService.logout(userId);
+      _isAuthenticated = false;
+    } catch (e) {
+      _isAuthenticated = true;
+      rethrow;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

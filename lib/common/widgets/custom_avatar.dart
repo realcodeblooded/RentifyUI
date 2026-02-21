@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomAvatar extends StatelessWidget {
   final ImageProvider? image;
-  final String? fallbackText;
+  final String fallbackText;
   final double size;
   final Color? backgroundColor;
   final Color? foregroundColor;
@@ -10,7 +10,7 @@ class CustomAvatar extends StatelessWidget {
   const CustomAvatar({
     super.key,
     this.image,
-    this.fallbackText,
+    this.fallbackText = "",
     this.size = 40.0, // size-10 = 2.5rem = 40px
     this.backgroundColor,
     this.foregroundColor,
@@ -39,7 +39,7 @@ class CustomAvatar extends StatelessWidget {
   Widget _buildFallback() {
     return Center(
       child: Text(
-        fallbackText ?? '',
+        fallbackText,
         style: TextStyle(
           fontSize: size * 0.4,
           fontWeight: FontWeight.w600,

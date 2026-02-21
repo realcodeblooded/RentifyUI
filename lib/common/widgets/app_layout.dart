@@ -1,26 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'custom_avatar.dart';
 import 'custom_nav_bar.dart';
 
-class AppLayout extends StatelessWidget {
+class AppLayout extends StatefulWidget {
   final Widget child;
   final String title;
-  final String userName;
   final VoidCallback? onLogout;
   final Color? backgroundColor;
   final int currentIndex;
   final ValueChanged<int>? onTabSelected;
+  final FlutterSecureStorage storage;
 
   const AppLayout({
     super.key,
     required this.child,
     this.title = 'Rentify',
-    this.userName = 'Thomas',
     this.onLogout,
     this.backgroundColor,
     this.currentIndex = 0,
     this.onTabSelected,
+    this.storage = const FlutterSecureStorage(),
   });
+
+  @override
+  State<AppLayout> createState() => _AppLayoutState();
+}
+
+class _AppLayoutState extends State<AppLayout> {
+  String _avatarText = '';
+  String _userName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAvatarText();
+  }
+
+  Future<void> _loadAvatarText() async {
+    final String firstName = await widget.storage.read(key: "firstName") ?? '';
+    final String lastName = await widget.storage.read(key: "lastName") ?? '';
+    final String avatarText = [firstName, lastName]
+        .where((s) => s.isNotEmpty)
+        .map((s) => s[0].toUpperCase())
+        .join();
+
+    setState(() {
+      _avatarText = avatarText;
+      _userName = '$firstName $lastName';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +68,7 @@ class AppLayout extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Icon(
-                Icons.apartment, // Logo placeholder
+                Icons.apartment,
                 color: Colors.white,
                 size: 20,
               ),
@@ -47,7 +76,7 @@ class AppLayout extends StatelessWidget {
           ),
         ),
         title: Text(
-          title,
+          widget.title,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
@@ -56,7 +85,7 @@ class AppLayout extends StatelessWidget {
         actions: [
           Center(
             child: Text(
-              'Hi, $userName',
+              'Hi, $_userName',
               style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 14,
@@ -65,14 +94,15 @@ class AppLayout extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           PopupMenuButton<String>(
-            icon: const CustomAvatar(
-              fallbackText: 'TM',
+            icon: CustomAvatar(
+              fallbackText:
+                  _avatarText, // fixed typo too (avartText → _avatarText)
               size: 36,
             ),
             offset: const Offset(0, 48),
             onSelected: (value) {
-              if (value == 'logout' && onLogout != null) {
-                onLogout!();
+              if (value == 'logout' && widget.onLogout != null) {
+                widget.onLogout!();
               }
             },
             itemBuilder: (BuildContext context) {
@@ -100,7 +130,6 @@ class AppLayout extends StatelessWidget {
                 const PopupMenuDivider(),
                 const PopupMenuItem<String>(
                   value: 'logout',
-                  onTap: null,
                   child: Row(
                     children: [
                       Icon(Icons.logout, size: 18, color: Colors.red),
@@ -123,21 +152,21 @@ class AppLayout extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: backgroundColor ?? Colors.white.withOpacity(0.05),
+      backgroundColor: widget.backgroundColor ?? Colors.white.withOpacity(0.05),
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 80), // Space for nav bar
-            child: child,
+            padding: const EdgeInsets.only(top: 80),
+            child: widget.child,
           ),
-          if (onTabSelected != null)
+          if (widget.onTabSelected != null)
             Positioned(
               top: 24,
               left: 24,
               right: 24,
               child: CustomNavBar(
-                currentIndex: currentIndex,
-                onTabSelected: onTabSelected!,
+                currentIndex: widget.currentIndex,
+                onTabSelected: widget.onTabSelected!,
               ),
             ),
         ],
